@@ -2,7 +2,7 @@
 
 GetContact CLI adalah project Python untuk melakukan komunikasi dengan API GetContact melalui command-line interface (CLI), tanpa menggunakan aplikasi Android maupun browser.
 
-<img width="992" height="568" alt="gtc-cli" src="https://github.com/user-attachments/assets/738b4102-1d61-4cd5-846a-6f2bcfbea9aa" />
+<img width="503" height="274" alt="Image" src="https://github.com/user-attachments/assets/75781552-b2ba-4f19-a297-70ef88f8f2b1" />
 
 Project ini dibuat sebagai **research dan learning project** untuk memahami bagaimana aplikasi mobile berkomunikasi dengan backend service serta bagaimana proses autentikasi dan request API bekerja.
 
