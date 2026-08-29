@@ -136,7 +136,7 @@ Sudah diuji di Windows (git-bash) dan Linux. Tidak ada langkah build, tidak ada 
 ### Mode menu (untuk pemakaian sehari-hari)
 
 ```bash
-python gtc.py
+python main.py
 ```
 
 Tanpa argumen apa pun, program menampilkan daftar fitur bernomor:
@@ -158,12 +158,12 @@ Pilih nomornya, masukkan nomor HP target, hasil langsung tampil. Setelah selesai
 ### Mode perintah (untuk scripting)
 
 ```bash
-python gtc.py search 08123456789                  # profil
-python gtc.py search 08123456789 -t tags          # daftar tag
-python gtc.py search 08123456789 --json           # respons mentah
-python gtc.py quota
-python gtc.py batch nomor.csv --delay 2
-python gtc.py cred list
+python main.py search 08987654321                  # profil
+python main.py search 08987654321 -t tags          # daftar tag
+python main.py search 08987654321 --json           # respons mentah
+python main.py quota
+python main.py batch nomor.csv --delay 2
+python main.py cred list
 ```
 
 Semua nomor dinormalkan ke format E.164 dengan asumsi Indonesia: `08…` menjadi `+628…`, `62…`
@@ -189,8 +189,8 @@ Satu nomor per baris. Jika baris pertama mengandung header bernama `phone`, `pho
 
 ```csv
 phone,nama
-08123456789,Budi
-081298765432,Siti
+08987654321,Asep
+081298765432,Saipul
 ```
 
 Hasilnya CSV dengan kolom `phone,status,displayName,tagCount,tags,error`. Satu nomor yang gagal tidak
@@ -205,14 +205,14 @@ untuk memakai akun GetContact, jadi perlakukan file ini seperti password.
 Menambahkan kredensial yang sudah dimiliki:
 
 ```bash
-python gtc.py cred add akun1 --final-key <hex> --token <token> --phone +628...
-python gtc.py cred use akun1
+python main.py cred add akun1 --final-key <hex> --token <token> --phone +628...
+python main.py cred use akun1
 ```
 
 Membuat yang baru dari nol:
 
 ```bash
-python gtc.py generate 08123456789
+python main.py generate 08987654321
 ```
 
 Perintah ini mendaftarkan perangkat palsu, menegosiasikan kunci enkripsi lewat Diffie-Hellman, lalu meminta verifikasi kepemilikan nomor melalui VerifyKit. Di tengah proses akan muncul sebuah link WhatsApp beserta kode; kirim pesan tersebut dari nomor yang bersangkutan, tunggu centang dua, baru tekan Enter. Kredensial hasilnya langsung tersimpan.
@@ -224,7 +224,7 @@ Lokasi penyimpanan bisa dipindah lewat `GTC_CONFIG_DIR`.
 Setiap kali sebuah perintah dijalankan, apa yang tampil di layar juga ditulis ke `results/` dengan nama berpola waktu:
 
 ```
-results/20260820-101307-search-08123456789.txt
+results/20260820-101307-search-08987654321.txt
 results/20260820-100248-quota.txt
 results/20260820-101512-batch.csv
 ```
@@ -239,7 +239,7 @@ foldernya membesar, bersihkan manual.
 | Variabel | Fungsi |
 | --- | --- |
 | `GTC_CONFIG_DIR` | Lokasi `credentials.json`. Default `~/.config/gtc`. |
-| `GTC_RESULTS_DIR` | Lokasi keluaran. Default `results/` di samping `gtc.py`. |
+| `GTC_RESULTS_DIR` | Lokasi keluaran. Default `results/` di samping `main.py`. |
 | `GTC_NO_BANNER` | Diisi apa saja untuk menyembunyikan banner dan log startup. |
 
 ## Cara kerjanya
@@ -267,7 +267,7 @@ Registrasi memakai VerifyKit (`api.verifykit.com`) sebagai penyedia verifikasi, 
 - Kuota pencarian mengikuti langganan akun. Habis kuota berarti error, bukan hasil kosong.
 - Permintaan yang terlalu cepat memicu captcha. Naikkan `--delay` pada `batch`, dan pakai perintah
   `captcha` bila terlanjur kena.
-- Kunci HMAC dan versi aplikasi bersifat statis. Kalau GetContact mengganti keduanya, konstanta di bagian atas `gtc.py` harus diperbarui.
+- Kunci HMAC dan versi aplikasi bersifat statis. Kalau GetContact mengganti keduanya, konstanta di bagian atas `main.py` harus diperbarui.
 
 ## Notes
 
