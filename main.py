@@ -568,14 +568,21 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-BANNER = r"""
+BLUE = "\033[38;2;0;174;239m"
+RESET = "\033[0m"
+BOLD = "\033[1m"
+YELLOW = "\033[93m"
+
+BANNER = f"""
+{BLUE}{BOLD}
  ██████╗ ███████╗████████╗ ██████╗ ██████╗ ███╗   ██╗████████╗ █████╗  ██████╗████████╗
 ██╔════╝ ██╔════╝╚══██╔══╝██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔════╝╚══██╔══╝
-██║  ███╗█████╗     ██║   ██║     ██║   ██║██╔██╗ ██║   ██║   ███████║██║        ██║   
-██║   ██║██╔══╝     ██║   ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██║██║        ██║   
-╚██████╔╝███████╗   ██║   ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╗   ██║   
- ╚═════╝ ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝   ╚═╝                                                                            
-By mfajarb 
+██║  ███╗█████╗     ██║   ██║     ██║   ██║██╔██╗ ██║   ██║   ███████║██║        ██║
+██║   ██║██╔══╝     ██║   ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██║██║        ██║
+╚██████╔╝███████╗   ██║   ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╗   ██║
+ ╚═════╝ ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝   ╚═╝
+{RESET}
+{YELLOW}                              By xoxovell{RESET}
 """
 
 
@@ -619,14 +626,21 @@ def open_result_file(args) -> Path:
     return RESULTS_DIR / f"{'-'.join(parts)}.{ext}"
 
 
+BLUE = "\033[38;2;0;174;239m"
+WHITE = "\033[97m"
+GRAY = "\033[90m"
+RESET = "\033[0m"
+BOLD = "\033[1m"
+RED = "\033[91m"
+
 MENU = [
-    ("Cari profil nomor        (nama pemilik)", "profile"),
-    ("Cari tag nomor           (nama tersimpan orang lain)", "tags"),
-    ("Sisa kuota akun", "quota"),
-    ("Cari banyak nomor dari file CSV", "batch"),
-    ("Buka blokir / captcha", "captcha"),
-    ("Lihat akun tersimpan", "credlist"),
-    ("Tambah akun baru (butuh WhatsApp)", "generate"),
+    (f"{BOLD}{WHITE}Cari profil nomor{RESET}", "profile"),
+    (f"{BOLD}{WHITE}Cari tag nomor{RESET}", "tags"),
+    (f"{BOLD}{WHITE}Sisa kuota akun{RESET}", "quota"),
+    (f"{BOLD}{WHITE}Cari banyak nomor dari file CSV{RESET}", "batch"),
+    (f"{BOLD}{WHITE}Buka blokir / captcha{RESET}", "captcha"),
+    (f"{BOLD}{WHITE}Lihat akun tersimpan{RESET}", "credlist"),
+    (f"{BOLD}{WHITE}Tambah akun baru{RESET}", "generate"),
 ]
 
 
@@ -639,54 +653,100 @@ def ask(prompt: str) -> str:
 
 def interactive() -> int:
     print(BANNER)
+
     while True:
-        print("Pilih fitur:")
+        print(f"\n{BLUE}{BOLD}╭──────────────────────────────────────────╮{RESET}")
+        print(f"{BLUE}{BOLD}│              PILIH FITUR                │{RESET}")
+        print(f"{BLUE}{BOLD}╰──────────────────────────────────────────╯{RESET}")
+
         for i, (label, _) in enumerate(MENU, 1):
-            print(f"  {i}. {label}")
-        print("  0. Keluar\n")
-        choice = ask("Nomor pilihan: ")
+            print(f"  {BLUE}{BOLD}{i}{RESET}. {label}")
+
+        print(f"  {BLUE}{BOLD}0{RESET}. {WHITE}Keluar{RESET}\n")
+
+        choice = ask(
+            f"{BLUE}{BOLD}❯{RESET} {WHITE}Nomor pilihan: {RESET}"
+        )
+
         if choice in ("0", "q", "keluar", ""):
+            print(f"\n{BLUE}Sampai jumpa! 👋{RESET}\n")
             return 0
+
         try:
             idx = int(choice) - 1
+
             if not (0 <= idx < len(MENU)):
-                print("Pilihan tidak valid.\n")
+                print(
+                    f"{RED}❌{RESET} "
+                    f"{WHITE}Pilihan tidak valid.{RESET}\n"
+                )
                 continue
+
         except ValueError:
-            print("Masukkan angka.\n")
+            print(
+                f"{RED}❌{RESET} "
+                f"{WHITE}Masukkan angka.{RESET}\n"
+            )
             continue
 
         action = MENU[idx][1]
+
         try:
             if action == "profile":
-                phone = ask("Nomor telepon: ")
-                sys.argv = ["gtc", "search", phone, "-t", "profile"]
+                phone = ask(
+                    f"{BLUE}Nomor telepon: {RESET}"
+                )
+                sys.argv = [
+                    "gtc", "search", phone, "-t", "profile"
+                ]
+
             elif action == "tags":
-                phone = ask("Nomor telepon: ")
-                sys.argv = ["gtc", "search", phone, "-t", "tags"]
+                phone = ask(
+                    f"{BLUE}Nomor telepon: {RESET}"
+                )
+                sys.argv = [
+                    "gtc", "search", phone, "-t", "tags"
+                ]
+
             elif action == "quota":
                 sys.argv = ["gtc", "quota"]
+
             elif action == "batch":
-                csv_path = ask("Path file CSV: ")
+                csv_path = ask(
+                    f"{BLUE}Path file CSV: {RESET}"
+                )
                 sys.argv = ["gtc", "batch", csv_path]
+
             elif action == "captcha":
                 sys.argv = ["gtc", "captcha"]
+
             elif action == "credlist":
                 sys.argv = ["gtc", "cred", "list"]
+
             elif action == "generate":
-                phone = ask("Nomor WhatsApp (untuk verifikasi): ")
+                phone = ask(
+                    f"{BLUE}Nomor WhatsApp (untuk verifikasi): {RESET}"
+                )
                 sys.argv = ["gtc", "generate", phone]
+
             else:
                 continue
 
             args = build_parser().parse_args()
-            print_startup(args)
-            return args.func(args)
-        except GtcError as e:
-            print(f"Error: {e}\n")
-        except Exception as e:
-            print(f"Unexpected error: {e}\n")
 
+            print_startup(args)
+
+            return args.func(args)
+
+        except GtcError as e:
+            print(
+                f"{RED}❌ Error:{RESET} {e}\n"
+            )
+
+        except Exception as e:
+            print(
+                f"{RED}❌ Unexpected error:{RESET} {e}\n"
+            )
 
 def main() -> int:
     if len(sys.argv) == 1:
@@ -697,7 +757,7 @@ def main() -> int:
     try:
         return args.func(args)
     except GtcError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"❌ Error: {e}", file=sys.stderr)
         return 1
 
 
